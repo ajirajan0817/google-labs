@@ -9,7 +9,3 @@
 ## 2026-05-14 - Dynamic Page Title for Micro-Feedback
 **Learning:** Updating the document title to reflect the application state (e.g., current count) provides useful feedback in the browser tab, helping users track state even when they aren't actively viewing the page.
 **Action:** Use `useEffect` to sync important application states with `document.title` for better tab identification and UX.
-
-## 2026-05-17 - Keyboard Shortcuts for Frictionless Interactions
-**Learning:** For utility micro-apps like counters, adding keyboard shortcuts (e.g., +, -, R) significantly reduces friction and improves accessibility for power users and those with motor impairments. Coupling these with ARIA live regions ensures the state change is announced even if focus isn't moved.
-**Action:** Implement global keyboard listeners for common actions in micro-utilities and provide visual hints (tooltips) for discoverability.

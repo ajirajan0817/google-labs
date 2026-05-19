@@ -22,15 +22,8 @@ main {
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
-.count-display {
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin: 1.5rem 0;
-  color: #1a1a1a;
-}
-
 .counter-container {
-  margin-top: 1rem;
+  margin-top: 2rem;
   display: flex;
   gap: 1rem;
   justify-content: center;
