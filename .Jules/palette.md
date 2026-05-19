@@ -13,3 +13,7 @@
 ## 2026-05-17 - Keyboard Shortcuts for Frictionless Interactions
 **Learning:** For utility micro-apps like counters, adding keyboard shortcuts (e.g., +, -, R) significantly reduces friction and improves accessibility for power users and those with motor impairments. Coupling these with ARIA live regions ensures the state change is announced even if focus isn't moved.
 **Action:** Implement global keyboard listeners for common actions in micro-utilities and provide visual hints (tooltips) for discoverability.
+
+## 2026-05-18 - Discoverable Keyboard Shortcuts & Visual Feedback
+**Learning:** Adding 'aria-keyshortcuts' makes shortcuts discoverable for screen reader users. However, shortcuts need visual confirmation for sighted users too; simulating an 'active' state via React state-driven classes provides a delightful, consistent experience across mouse and keyboard interactions.
+**Action:** Always pair keyboard listeners with 'aria-keyshortcuts' and a short-lived visual 'active' state to bridge the gap between input methods.

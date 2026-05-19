@@ -3,6 +3,7 @@ import './App.css'
 
 function App() {
   const [count, setCount] = useState(0)
+  const [activeShortcut, setActiveShortcut] = useState<string | null>(null)
   const incRef = useRef<HTMLButtonElement>(null)
   const decRef = useRef<HTMLButtonElement>(null)
   const resetRef = useRef<HTMLButtonElement>(null)
@@ -28,9 +29,32 @@ function App() {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === '+' || e.key === '=') setCount((p) => p + 1)
-      else if (e.key === '-') decrement()
-      else if (e.key.toLowerCase() === 'r') reset()
+      let key: string | null = null
+      if (e.key === '+' || e.key === '=') {
+        setCount((p) => p + 1)
+        key = 'inc'
+      } else if (e.key === '-') {
+        setCount((p) => {
+          if (p > 0) {
+            key = 'dec'
+            return p - 1
+          }
+          return p
+        })
+      } else if (e.key.toLowerCase() === 'r') {
+        setCount((p) => {
+          if (p > 0) {
+            key = 'reset'
+            return 0
+          }
+          return p
+        })
+      }
+
+      if (key) {
+        setActiveShortcut(key)
+        setTimeout(() => setActiveShortcut(null), 150)
+      }
     }
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
@@ -41,9 +65,9 @@ function App() {
       <h1>Palette's Counter</h1>
       <div className="count-display" aria-live="polite">Count is {count}</div>
       <div className="counter-container">
-        <button ref={decRef} className="counter-button" onClick={decrement} disabled={count === 0} aria-label="Decrement count" title="Decrement (-)">-</button>
-        <button ref={incRef} className="counter-button" onClick={() => setCount((p) => p + 1)} aria-label="Increment count" title="Increment (+)">+</button>
-        <button ref={resetRef} className="counter-button reset-button" onClick={reset} disabled={count === 0} aria-label="Reset count" title="Reset (R)">Reset</button>
+        <button ref={decRef} className={`counter-button ${activeShortcut === 'dec' ? 'active' : ''}`} onClick={decrement} disabled={count === 0} aria-label="Decrement count" aria-keyshortcuts="-" title="Decrement (-)">-</button>
+        <button ref={incRef} className={`counter-button ${activeShortcut === 'inc' ? 'active' : ''}`} onClick={() => setCount((p) => p + 1)} aria-label="Increment count" aria-keyshortcuts="+ =" title="Increment (+)">+</button>
+        <button ref={resetRef} className={`counter-button reset-button ${activeShortcut === 'reset' ? 'active' : ''}`} onClick={reset} disabled={count === 0} aria-label="Reset count" aria-keyshortcuts="r" title="Reset (R)">Reset</button>
       </div>
       <footer className="shortcut-guide">
         Shortcuts: <strong>+</strong> inc, <strong>-</strong> dec, <strong>R</strong> reset
