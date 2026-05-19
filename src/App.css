@@ -22,8 +22,15 @@ main {
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
+.count-display {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 1.5rem 0;
+  color: #1a1a1a;
+}
+
 .counter-container {
-  margin-top: 2rem;
+  margin-top: 1rem;
   display: flex;
   gap: 1rem;
   justify-content: center;
@@ -74,4 +81,19 @@ main {
   cursor: not-allowed;
   filter: grayscale(0.5);
   transform: none;
+}
+
+.shortcut-guide {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+  color: #666;
+  font-size: 0.85rem;
+}
+
+.shortcut-guide strong {
+  background: #eee;
+  padding: 0 0.3rem;
+  border-radius: 3px;
+  font-family: monospace;
 }
