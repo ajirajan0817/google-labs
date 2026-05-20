@@ -85,6 +85,16 @@ main {
   transform: none;
 }
 
+.undo-button {
+  background-color: #fff;
+  color: #535bf2;
+  border-color: #535bf2;
+}
+
+.undo-button:hover {
+  background-color: #f8f8ff;
+}
+
 .shortcut-guide {
   margin-top: 2rem;
   padding-top: 1rem;
@@ -93,9 +103,12 @@ main {
   font-size: 0.85rem;
 }
 
-.shortcut-guide strong {
+.shortcut-guide kbd {
   background: #eee;
-  padding: 0 0.3rem;
-  border-radius: 3px;
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
   font-family: monospace;
+  border: 1px solid #ccc;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.2);
+  font-size: 0.8rem;
 }
