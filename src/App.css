@@ -93,9 +93,45 @@ main {
   font-size: 0.85rem;
 }
 
-.shortcut-guide strong {
-  background: #eee;
-  padding: 0 0.3rem;
+kbd {
+  background-color: #fafafa;
+  border: 1px solid #c4c4c4;
   border-radius: 3px;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.2), 0 0 0 2px #fff inset;
+  color: #333;
+  display: inline-block;
   font-family: monospace;
+  font-size: 0.85em;
+  font-weight: 700;
+  line-height: 1.4;
+  margin: 0 0.1em;
+  padding: 0.1em 0.5em;
+  white-space: nowrap;
+}
+
+.undo-container {
+  margin-top: 1.5rem;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.undo-button {
+  background-color: transparent;
+  color: #535bf2;
+  border: 1px solid #535bf2;
+  border-radius: 6px;
+  padding: 0.4rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.undo-button:hover {
+  background-color: #535bf2;
+  color: white;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
 }
