@@ -17,3 +17,7 @@
 ## 2026-05-18 - Discoverable Keyboard Shortcuts & Visual Feedback
 **Learning:** Adding 'aria-keyshortcuts' makes shortcuts discoverable for screen reader users. However, shortcuts need visual confirmation for sighted users too; simulating an 'active' state via React state-driven classes provides a delightful, consistent experience across mouse and keyboard interactions.
 **Action:** Always pair keyboard listeners with 'aria-keyshortcuts' and a short-lived visual 'active' state to bridge the gap between input methods.
+
+## 2026-05-20 - Non-Blocking Undo for Destructive Actions
+**Learning:** For destructive but easily reversible actions like 'Reset', an 'Undo' option with a timed window is superior to a confirmation dialog. It maintains flow for power users while providing a safety net. Invalidating the undo state upon any subsequent interaction ensures state consistency.
+**Action:** Implement timed Undo patterns for reversible destructive actions and ensure they are automatically cleared by subsequent state-altering user inputs.
