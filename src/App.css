@@ -93,7 +93,7 @@ main {
   font-size: 0.85rem;
 }
 
-.shortcut-guide strong {
+.shortcut-guide kbd {
   background: #eee;
   padding: 0 0.3rem;
   border-radius: 3px;
