@@ -78,6 +78,28 @@ main {
   border-color: #999;
 }
 
+.undo-container {
+  margin-top: 1.5rem;
+  animation: fadeIn 0.3s ease;
+}
+
+.undo-button {
+  background-color: #fff;
+  color: #535bf2;
+  border-color: #535bf2;
+  font-size: 0.9em;
+  padding: 0.4em 1rem;
+}
+
+.undo-button:hover {
+  background-color: #f8f8ff;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 .counter-button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
