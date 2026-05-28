@@ -33,6 +33,23 @@ test('increments, decrements and resets counter', () => {
   expect(screen.getByText(/count is 0/i)).toBeInTheDocument()
 })
 
+test('undoes reset to restore previous count', () => {
+  render(<App />)
+  const incrementBtn = screen.getByRole('button', { name: /increment count/i })
+  const resetBtn = screen.getByRole('button', { name: /reset count/i })
+
+  fireEvent.click(incrementBtn)
+  fireEvent.click(incrementBtn) // Count is 2
+  fireEvent.click(resetBtn) // Count is 0
+
+  const undoBtn = screen.getByRole('button', { name: /undo reset/i })
+  expect(undoBtn).toBeInTheDocument()
+
+  fireEvent.click(undoBtn)
+  expect(screen.getByText(/count is 2/i)).toBeInTheDocument()
+  expect(undoBtn).not.toBeInTheDocument()
+})
+
 test('updates document title with current count', () => {
   render(<App />)
   expect(document.title).toBe('Count: 0 | Palette Counter')

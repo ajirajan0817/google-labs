@@ -7,10 +7,19 @@ function App() {
   const incRef = useRef<HTMLButtonElement>(null)
   const decRef = useRef<HTMLButtonElement>(null)
   const resetRef = useRef<HTMLButtonElement>(null)
+  const [undoCount, setUndoCount] = useState<number | null>(null)
 
   useEffect(() => {
     document.title = `Count: ${count} | Palette Counter`
-  }, [count])
+    if (count > 0 && undoCount !== null) setUndoCount(null)
+  }, [count, undoCount])
+
+  useEffect(() => {
+    if (undoCount !== null) {
+      const timer = setTimeout(() => setUndoCount(null), 5000)
+      return () => clearTimeout(timer)
+    }
+  }, [undoCount])
 
   const decrement = () => {
     const wasFocused = document.activeElement === decRef.current
@@ -23,6 +32,7 @@ function App() {
 
   const reset = () => {
     const wasFocused = document.activeElement === resetRef.current
+    if (count > 0) setUndoCount(count)
     setCount(0)
     if (wasFocused) setTimeout(() => incRef.current?.focus(), 0)
   }
@@ -72,6 +82,13 @@ function App() {
       <footer className="shortcut-guide">
         Shortcuts: <strong>+</strong> inc, <strong>-</strong> dec, <strong>R</strong> reset
       </footer>
+      {undoCount !== null && (
+        <div className="undo-toast">
+          <button onClick={() => { setCount(undoCount); setUndoCount(null) }} className="undo-link" aria-label={`Undo reset to ${undoCount}`}>
+            Undo Reset (to {undoCount})
+          </button>
+        </div>
+      )}
     </main>
   )
 }

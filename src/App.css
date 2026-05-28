@@ -99,3 +99,38 @@ main {
   border-radius: 3px;
   font-family: monospace;
 }
+
+.undo-toast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #333;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from { transform: translate(-50%, 100%); opacity: 0; }
+  to { transform: translate(-50%, 0); opacity: 1; }
+}
+
+.undo-link {
+  background: none;
+  border: none;
+  color: #a5a9ff;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 0.5rem;
+  text-decoration: underline;
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+.undo-link:hover {
+  color: #c0c4ff;
+}
