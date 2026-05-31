@@ -78,6 +78,29 @@ main {
   border-color: #999;
 }
 
+.undo-container {
+  margin-top: 1rem;
+  animation: slideIn 0.3s ease-out;
+}
+
+.undo-button {
+  background-color: #ffd60a;
+  color: #1a1a1a !important;
+  border-color: #ffd60a;
+  font-size: 0.9em;
+  padding: 0.4em 1rem;
+}
+
+.undo-button:hover {
+  background-color: #ffc300;
+  border-color: #ffc300;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 .counter-button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
@@ -93,9 +116,14 @@ main {
   font-size: 0.85rem;
 }
 
-.shortcut-guide strong {
+.shortcut-guide kbd {
   background: #eee;
-  padding: 0 0.3rem;
-  border-radius: 3px;
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
   font-family: monospace;
+  font-weight: 700;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 0 #ccc;
+  margin: 0 0.1rem;
+  font-size: 0.8rem;
 }
