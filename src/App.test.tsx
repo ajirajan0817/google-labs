@@ -1,5 +1,5 @@
-import { render, screen, fireEvent } from '@testing-library/react'
-import { expect, test } from 'vitest'
+import { render, screen, fireEvent, act } from '@testing-library/react'
+import { expect, test, vi } from 'vitest'
 import App from './App'
 
 test('increments, decrements and resets counter', () => {
@@ -31,6 +31,81 @@ test('increments, decrements and resets counter', () => {
   fireEvent.click(incrementBtn)
   fireEvent.click(resetBtn)
   expect(screen.getByText(/count is 0/i)).toBeInTheDocument()
+})
+
+test('undoes reset action', () => {
+  vi.useFakeTimers()
+  render(<App />)
+
+  const incrementBtn = screen.getByRole('button', { name: /increment count/i })
+
+  // Set count to 5
+  for (let i = 0; i < 5; i++) fireEvent.click(incrementBtn)
+  expect(screen.getByText(/count is 5/i)).toBeInTheDocument()
+
+  // Reset
+  const resetBtn = screen.getByRole('button', { name: /reset count/i })
+  fireEvent.click(resetBtn)
+  expect(screen.getByText(/count is 0/i)).toBeInTheDocument()
+
+  // Undo button should be visible
+  const undoBtn = screen.getByRole('button', { name: /undo reset to 5/i })
+  expect(undoBtn).toBeInTheDocument()
+
+  // Click Undo
+  fireEvent.click(undoBtn)
+  expect(screen.getByText(/count is 5/i)).toBeInTheDocument()
+  expect(undoBtn).not.toBeInTheDocument()
+
+  vi.useRealTimers()
+})
+
+test('undo reset via keyboard shortcut', () => {
+  render(<App />)
+  const incrementBtn = screen.getByRole('button', { name: /increment count/i })
+  fireEvent.click(incrementBtn)
+
+  const resetBtn = screen.getByRole('button', { name: /reset count/i })
+  fireEvent.click(resetBtn)
+
+  expect(screen.getByText(/count is 0/i)).toBeInTheDocument()
+  expect(screen.getByRole('button', { name: /undo reset to 1/i })).toBeInTheDocument()
+
+  // Ctrl+Z
+  fireEvent.keyDown(window, { key: 'z', ctrlKey: true })
+  expect(screen.getByText(/count is 1/i)).toBeInTheDocument()
+  expect(screen.queryByRole('button', { name: /undo reset to 1/i })).not.toBeInTheDocument()
+})
+
+test('undo button disappears after 5 seconds', () => {
+  vi.useFakeTimers()
+  render(<App />)
+
+  fireEvent.click(screen.getByRole('button', { name: /increment count/i }))
+  fireEvent.click(screen.getByRole('button', { name: /reset count/i }))
+
+  expect(screen.getByRole('button', { name: /undo reset to 1/i })).toBeInTheDocument()
+
+  // Advance time by 5 seconds
+  act(() => {
+    vi.advanceTimersByTime(5000)
+  })
+
+  expect(screen.queryByRole('button', { name: /undo reset to 1/i })).not.toBeInTheDocument()
+
+  vi.useRealTimers()
+})
+
+test('undo state clears on subsequent increment/decrement', () => {
+  render(<App />)
+
+  fireEvent.click(screen.getByRole('button', { name: /increment count/i }))
+  fireEvent.click(screen.getByRole('button', { name: /reset count/i }))
+  expect(screen.getByRole('button', { name: /undo reset to 1/i })).toBeInTheDocument()
+
+  // Increment should clear undo
+  fireEvent.click(screen.getByRole('button', { name: /increment count/i }))
+  expect(screen.queryByRole('button', { name: /undo reset to 1/i })).not.toBeInTheDocument()
 })
 
 test('updates document title with current count', () => {
