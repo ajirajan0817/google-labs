@@ -78,6 +78,17 @@ main {
   border-color: #999;
 }
 
+.undo-button {
+  background-color: #2e7d32;
+  border-color: #2e7d32;
+  margin-left: 0.5rem;
+}
+
+.undo-button:hover {
+  background-color: #1b5e20;
+  border-color: #1b5e20;
+}
+
 .counter-button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
@@ -93,9 +104,13 @@ main {
   font-size: 0.85rem;
 }
 
-.shortcut-guide strong {
+.shortcut-guide strong,
+.shortcut-guide kbd {
   background: #eee;
   padding: 0 0.3rem;
   border-radius: 3px;
   font-family: monospace;
+  font-size: 0.9rem;
+  border: 1px solid #ccc;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.2);
 }
