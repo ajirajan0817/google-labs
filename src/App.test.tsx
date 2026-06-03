@@ -1,5 +1,5 @@
-import { render, screen, fireEvent } from '@testing-library/react'
-import { expect, test } from 'vitest'
+import { render, screen, fireEvent, act } from '@testing-library/react'
+import { expect, test, vi } from 'vitest'
 import App from './App'
 
 test('increments, decrements and resets counter', () => {
@@ -69,4 +69,56 @@ test('handles keyboard shortcuts', () => {
   fireEvent.keyDown(window, { key: '+' })
   fireEvent.keyDown(window, { key: 'R' })
   expect(screen.getByText(/count is 0/i)).toBeInTheDocument()
+})
+
+test('allows undoing a reset', () => {
+  render(<App />)
+  const incrementBtn = screen.getByRole('button', { name: /increment count/i })
+  const resetBtn = screen.getByRole('button', { name: /reset count/i })
+
+  fireEvent.click(incrementBtn) // count 1
+  fireEvent.click(incrementBtn) // count 2
+  expect(screen.getByText(/count is 2/i)).toBeInTheDocument()
+
+  fireEvent.click(resetBtn)
+  expect(screen.getByText(/count is 0/i)).toBeInTheDocument()
+
+  const undoBtn = screen.getByRole('button', { name: /undo reset/i })
+  expect(undoBtn).toBeInTheDocument()
+
+  fireEvent.click(undoBtn)
+  expect(screen.getByText(/count is 2/i)).toBeInTheDocument()
+  expect(screen.queryByRole('button', { name: /undo reset/i })).not.toBeInTheDocument()
+})
+
+test('undo notification disappears after 5 seconds', async () => {
+  vi.useFakeTimers()
+  render(<App />)
+  const incrementBtn = screen.getByRole('button', { name: /increment count/i })
+  const resetBtn = screen.getByRole('button', { name: /reset count/i })
+
+  fireEvent.click(incrementBtn)
+  fireEvent.click(resetBtn)
+  expect(screen.getByRole('button', { name: /undo reset/i })).toBeInTheDocument()
+
+  await act(async () => {
+    vi.advanceTimersByTime(5000)
+    vi.runAllTimers()
+  })
+
+  expect(screen.queryByRole('button', { name: /undo reset/i })).not.toBeInTheDocument()
+  vi.useRealTimers()
+})
+
+test('new interaction clears undo state', () => {
+  render(<App />)
+  const incrementBtn = screen.getByRole('button', { name: /increment count/i })
+  const resetBtn = screen.getByRole('button', { name: /reset count/i })
+
+  fireEvent.click(incrementBtn)
+  fireEvent.click(resetBtn)
+  expect(screen.getByRole('button', { name: /undo reset/i })).toBeInTheDocument()
+
+  fireEvent.click(incrementBtn)
+  expect(screen.queryByRole('button', { name: /undo reset/i })).not.toBeInTheDocument()
 })
