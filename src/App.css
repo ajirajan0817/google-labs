@@ -20,6 +20,7 @@ main {
   background: white;
   border-radius: 12px;
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  position: relative;
 }
 
 .count-display {
@@ -83,6 +84,33 @@ main {
   cursor: not-allowed;
   filter: grayscale(0.5);
   transform: none;
+}
+
+.undo-toast {
+  margin-top: 1rem;
+  padding: 0.5rem;
+  background: #fff9db;
+  color: #856404;
+  border-radius: 4px;
+  animation: fadeIn 0.3s;
+}
+.undo-button {
+  background: #856404;
+  color: #fff;
+  border: none;
+  padding: 2px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+kbd {
+  background: #eee;
+  padding: 2px 4px;
+  border-radius: 3px;
+  border: 1px solid #ccc;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .shortcut-guide {
