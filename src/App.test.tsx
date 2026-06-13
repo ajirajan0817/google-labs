@@ -70,3 +70,12 @@ test('handles keyboard shortcuts', () => {
   fireEvent.keyDown(window, { key: 'R' })
   expect(screen.getByText(/count is 0/i)).toBeInTheDocument()
 })
+
+test('undoes reset via UI', () => {
+  render(<App />)
+  fireEvent.click(screen.getByLabelText(/increment count/i))
+  fireEvent.click(screen.getByLabelText(/reset count/i))
+  expect(screen.getByText(/count is 0/i)).toBeInTheDocument()
+  fireEvent.click(screen.getByRole('button', { name: /undo/i }))
+  expect(screen.getByText(/count is 1/i)).toBeInTheDocument()
+})
