@@ -3,7 +3,9 @@ import './App.css'
 
 function App() {
   const [count, setCount] = useState(0)
+  const [undoVal, setUndoVal] = useState<number | null>(null)
   const [activeShortcut, setActiveShortcut] = useState<string | null>(null)
+  const undoTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined)
   const incRef = useRef<HTMLButtonElement>(null)
   const decRef = useRef<HTMLButtonElement>(null)
   const resetRef = useRef<HTMLButtonElement>(null)
@@ -11,6 +13,12 @@ function App() {
   useEffect(() => {
     document.title = `Count: ${count} | Palette Counter`
   }, [count])
+
+  useEffect(() => {
+    return () => {
+      if (undoTimerRef.current) clearTimeout(undoTimerRef.current)
+    }
+  }, [])
 
   const decrement = () => {
     const wasFocused = document.activeElement === decRef.current
@@ -22,9 +30,22 @@ function App() {
   }
 
   const reset = () => {
+    if (count === 0) return
     const wasFocused = document.activeElement === resetRef.current
+    setUndoVal(count)
     setCount(0)
     if (wasFocused) setTimeout(() => incRef.current?.focus(), 0)
+
+    if (undoTimerRef.current) clearTimeout(undoTimerRef.current)
+    undoTimerRef.current = setTimeout(() => setUndoVal(null), 5000)
+  }
+
+  const undo = () => {
+    if (undoVal !== null) {
+      setCount(undoVal)
+      setUndoVal(null)
+      if (undoTimerRef.current) clearTimeout(undoTimerRef.current)
+    }
   }
 
   useEffect(() => {
@@ -69,8 +90,13 @@ function App() {
         <button ref={incRef} className={`counter-button ${activeShortcut === 'inc' ? 'active' : ''}`} onClick={() => setCount((p) => p + 1)} aria-label="Increment count" aria-keyshortcuts="+ =" title="Increment (+)">+</button>
         <button ref={resetRef} className={`counter-button reset-button ${activeShortcut === 'reset' ? 'active' : ''}`} onClick={reset} disabled={count === 0} aria-label="Reset count" aria-keyshortcuts="r" title="Reset (R)">Reset</button>
       </div>
+      {undoVal !== null && (
+        <div className="undo-toast" role="status">
+          Reset. <button onClick={undo} className="undo-link">Undo</button>
+        </div>
+      )}
       <footer className="shortcut-guide">
-        Shortcuts: <strong>+</strong> inc, <strong>-</strong> dec, <strong>R</strong> reset
+        Shortcuts: <kbd>+</kbd> inc, <kbd>-</kbd> dec, <kbd>R</kbd> reset
       </footer>
     </main>
   )

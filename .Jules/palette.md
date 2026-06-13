@@ -17,3 +17,7 @@
 ## 2026-05-18 - Discoverable Keyboard Shortcuts & Visual Feedback
 **Learning:** Adding 'aria-keyshortcuts' makes shortcuts discoverable for screen reader users. However, shortcuts need visual confirmation for sighted users too; simulating an 'active' state via React state-driven classes provides a delightful, consistent experience across mouse and keyboard interactions.
 **Action:** Always pair keyboard listeners with 'aria-keyshortcuts' and a short-lived visual 'active' state to bridge the gap between input methods.
+
+## 2026-05-19 - Robust Timed UI State Management
+**Learning:** For temporary safety-net features like "Undo", race conditions can occur if multiple destructive actions are performed in rapid succession. Managing the auto-dismiss timer via a persistent ref and clearing it before every new action ensures the UI remains predictable and prevents premature dismissals from stale timers.
+**Action:** Always clear existing timer refs (`clearTimeout(timerRef.current)`) immediately before initiating a new timer for single-instance transient UI elements.
