@@ -38,32 +38,30 @@ main {
 
 .counter-button {
   border-radius: 8px;
-  border: 1px solid #535bf2;
+  border: 1px solid #646cff;
   padding: 0.6em 1.2rem;
   font-size: 1.1em;
   font-weight: 600;
   font-family: inherit;
-  background-color: #535bf2;
+  background-color: #646cff;
   color: white;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .counter-button:hover {
-  background-color: #4048e0;
-  border-color: #4048e0;
+  background-color: #535bf2;
+  border-color: #535bf2;
   transform: translateY(-1px);
 }
 
-.counter-button:active,
-.counter-button.active {
+.counter-button:active {
   transform: translateY(0);
-  filter: brightness(0.9);
 }
 
 .counter-button:focus,
 .counter-button:focus-visible {
-  outline: 4px solid #535bf2;
+  outline: 4px solid #646cff;
   outline-offset: 2px;
 }
 
@@ -93,9 +91,6 @@ main {
   font-size: 0.85rem;
 }
 
-.shortcut-guide strong {
-  background: #eee;
-  padding: 0 0.3rem;
-  border-radius: 3px;
-  font-family: monospace;
-}
+kbd { background: #eee; padding: 0.1rem 0.4rem; border-radius: 4px; font-family: monospace; border: 1px solid #ccc; box-shadow: 0 1px 0 rgba(0,0,0,0.2); }
+.undo-button { background-color: #fff9db; color: #5c3c00; border-color: #fcc419; animation: fadeIn 0.3s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
