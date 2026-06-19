@@ -1,5 +1,5 @@
-import { render, screen, fireEvent } from '@testing-library/react'
-import { expect, test } from 'vitest'
+import { render, screen, fireEvent, act } from '@testing-library/react'
+import { expect, test, vi } from 'vitest'
 import App from './App'
 
 test('increments, decrements and resets counter', () => {
@@ -69,4 +69,55 @@ test('handles keyboard shortcuts', () => {
   fireEvent.keyDown(window, { key: '+' })
   fireEvent.keyDown(window, { key: 'R' })
   expect(screen.getByText(/count is 0/i)).toBeInTheDocument()
+})
+
+test('undoes reset action', async () => {
+  vi.useFakeTimers()
+  render(<App />)
+  const incrementBtn = screen.getByRole('button', { name: /increment count/i })
+  const resetBtn = screen.getByRole('button', { name: /reset count/i })
+
+  fireEvent.click(incrementBtn) // 1
+  fireEvent.click(incrementBtn) // 2
+  fireEvent.click(resetBtn)
+  expect(screen.getByText(/count is 0/i)).toBeInTheDocument()
+
+  const undoBtn = screen.getByRole('button', { name: /undo reset/i })
+  expect(undoBtn).toBeInTheDocument()
+
+  fireEvent.click(undoBtn)
+  expect(screen.getByText(/count is 2/i)).toBeInTheDocument()
+  expect(screen.queryByRole('button', { name: /undo reset/i })).not.toBeInTheDocument()
+
+  // Test expiration
+  fireEvent.click(resetBtn)
+  expect(screen.getByRole('button', { name: /undo reset/i })).toBeInTheDocument()
+  await act(async () => { vi.advanceTimersByTime(5000); vi.runAllTimers() })
+  expect(screen.queryByRole('button', { name: /undo reset/i })).not.toBeInTheDocument()
+  vi.useRealTimers()
+})
+
+test('undoes reset with keyboard shortcut', async () => {
+  vi.useFakeTimers()
+  render(<App />)
+  fireEvent.keyDown(window, { key: '+' }) // 1
+  fireEvent.keyDown(window, { key: 'r' })
+  expect(screen.getByText(/count is 0/i)).toBeInTheDocument()
+
+  // Undo works when toast is visible
+  fireEvent.keyDown(window, { key: 'z', ctrlKey: true })
+  expect(screen.getByText(/count is 1/i)).toBeInTheDocument()
+
+  // Reset again
+  fireEvent.keyDown(window, { key: 'r' })
+  expect(screen.getByText(/count is 0/i)).toBeInTheDocument()
+
+  // Wait for toast to expire
+  await act(async () => { vi.advanceTimersByTime(5000); vi.runAllTimers() })
+  expect(screen.queryByRole('button', { name: /undo reset/i })).not.toBeInTheDocument()
+
+  // Undo should NOT work now
+  fireEvent.keyDown(window, { key: 'z', ctrlKey: true })
+  expect(screen.getByText(/count is 0/i)).toBeInTheDocument()
+  vi.useRealTimers()
 })
