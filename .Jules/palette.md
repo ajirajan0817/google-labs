@@ -17,3 +17,7 @@
 ## 2026-05-18 - Discoverable Keyboard Shortcuts & Visual Feedback
 **Learning:** Adding 'aria-keyshortcuts' makes shortcuts discoverable for screen reader users. However, shortcuts need visual confirmation for sighted users too; simulating an 'active' state via React state-driven classes provides a delightful, consistent experience across mouse and keyboard interactions.
 **Action:** Always pair keyboard listeners with 'aria-keyshortcuts' and a short-lived visual 'active' state to bridge the gap between input methods.
+
+## 2026-05-19 - Temporal Context for Global Keyboard Shortcuts
+**Learning:** Global keyboard shortcuts for destructive 'Undo' actions should be restricted to the same temporal window as their visual feedback (e.g., while a toast is visible). This prevents 'ghost' actions and ensures the shortcut's behavior is always contextualized by the UI.
+**Action:** When implementing 'Undo' shortcuts, check for the visibility of the undo UI element (or its state) before executing the action.
