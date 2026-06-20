@@ -70,3 +70,38 @@ test('handles keyboard shortcuts', () => {
   fireEvent.keyDown(window, { key: 'R' })
   expect(screen.getByText(/count is 0/i)).toBeInTheDocument()
 })
+
+test('undo functionality works via button and keyboard', async () => {
+  const { vi } = await import('vitest')
+  const { act } = await import('react')
+  vi.useFakeTimers()
+  render(<App />)
+
+  // Setup count to 5
+  const inc = screen.getByRole('button', { name: /increment count/i })
+  for (let i = 0; i < 5; i++) fireEvent.click(inc)
+
+  // Reset and verify Undo button
+  fireEvent.click(screen.getByRole('button', { name: /reset count/i }))
+  const undoBtn = screen.getByRole('button', { name: /undo reset/i })
+  expect(undoBtn).toBeInTheDocument()
+
+  // Undo via button
+  fireEvent.click(undoBtn)
+  expect(screen.getByText(/count is 5/i)).toBeInTheDocument()
+
+  // Reset and undo via keyboard
+  fireEvent.click(screen.getByRole('button', { name: /reset count/i }))
+  fireEvent.keyDown(window, { key: 'z', ctrlKey: true })
+  expect(screen.getByText(/count is 5/i)).toBeInTheDocument()
+
+  // Verify timeout
+  fireEvent.click(screen.getByRole('button', { name: /reset count/i }))
+  expect(screen.getByRole('button', { name: /undo reset/i })).toBeInTheDocument()
+  await act(async () => {
+    vi.advanceTimersByTime(5000)
+    vi.runAllTimers()
+  })
+  expect(screen.queryByRole('button', { name: /undo reset/i })).not.toBeInTheDocument()
+  vi.useRealTimers()
+})
