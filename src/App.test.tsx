@@ -1,5 +1,5 @@
-import { render, screen, fireEvent } from '@testing-library/react'
-import { expect, test } from 'vitest'
+import { render, screen, fireEvent, act } from '@testing-library/react'
+import { expect, test, vi } from 'vitest'
 import App from './App'
 
 test('increments, decrements and resets counter', () => {
@@ -69,4 +69,17 @@ test('handles keyboard shortcuts', () => {
   fireEvent.keyDown(window, { key: '+' })
   fireEvent.keyDown(window, { key: 'R' })
   expect(screen.getByText(/count is 0/i)).toBeInTheDocument()
+})
+
+test('provides undo safety net for reset action', async () => {
+  vi.useFakeTimers(); render(<App />)
+  fireEvent.click(screen.getByRole('button', { name: /increment count/i }))
+  fireEvent.click(screen.getByRole('button', { name: /reset count/i }))
+  const undoBtn = screen.getByRole('button', { name: /undo reset/i })
+  expect(undoBtn).toBeInTheDocument(); fireEvent.click(undoBtn)
+  expect(screen.getByText(/count is 1/i)).toBeInTheDocument()
+  fireEvent.click(screen.getByRole('button', { name: /reset count/i }))
+  await act(async () => { vi.advanceTimersByTime(5000); vi.runAllTimers() })
+  expect(screen.queryByRole('button', { name: /undo reset/i })).not.toBeInTheDocument()
+  vi.useRealTimers()
 })
