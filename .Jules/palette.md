@@ -17,3 +17,7 @@
 ## 2026-05-18 - Discoverable Keyboard Shortcuts & Visual Feedback
 **Learning:** Adding 'aria-keyshortcuts' makes shortcuts discoverable for screen reader users. However, shortcuts need visual confirmation for sighted users too; simulating an 'active' state via React state-driven classes provides a delightful, consistent experience across mouse and keyboard interactions.
 **Action:** Always pair keyboard listeners with 'aria-keyshortcuts' and a short-lived visual 'active' state to bridge the gap between input methods.
+
+## 2025-05-19 - Optimizing Global Listeners for Frequent State Changes
+**Learning:** When using global event listeners (like keyboard shortcuts) that depend on frequently changing state (like a counter), use `useRef` to hold the current state values. This allows the `useEffect` hook to have a stable dependency array, preventing unnecessary listener removal/addition on every state update while ensuring the listener always has access to the latest state.
+**Action:** Use `useRef` for state values needed inside global event listeners to maintain a single, stable listener throughout the component lifecycle.
