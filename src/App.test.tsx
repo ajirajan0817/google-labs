@@ -70,3 +70,33 @@ test('handles keyboard shortcuts', () => {
   fireEvent.keyDown(window, { key: 'R' })
   expect(screen.getByText(/count is 0/i)).toBeInTheDocument()
 })
+
+test('provides undo functionality for reset and decrement', async () => {
+  render(<App />)
+  const incrementBtn = screen.getByRole('button', { name: /increment count/i })
+  const resetBtn = screen.getByRole('button', { name: /reset count/i })
+  const decrementBtn = screen.getByRole('button', { name: /decrement count/i })
+
+  // Setup count = 5
+  for (let i = 0; i < 5; i++) fireEvent.click(incrementBtn)
+  expect(screen.getByText(/count is 5/i)).toBeInTheDocument()
+
+  // Reset and verify undo toast
+  fireEvent.click(resetBtn)
+  expect(screen.getByText(/count is 0/i)).toBeInTheDocument()
+  const undoBtn = screen.getByRole('button', { name: /undo action/i })
+  expect(undoBtn).toBeInTheDocument()
+
+  // Click undo
+  fireEvent.click(undoBtn)
+  expect(screen.getByText(/count is 5/i)).toBeInTheDocument()
+  expect(undoBtn).not.toBeInTheDocument()
+
+  // Decrement and undo via keyboard
+  fireEvent.click(decrementBtn)
+  expect(screen.getByText(/count is 4/i)).toBeInTheDocument()
+  expect(screen.getByRole('button', { name: /undo action/i })).toBeInTheDocument()
+
+  fireEvent.keyDown(window, { key: 'z', ctrlKey: true })
+  expect(screen.getByText(/count is 5/i)).toBeInTheDocument()
+})
