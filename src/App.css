@@ -78,6 +78,17 @@ main {
   border-color: #999;
 }
 
+.reset-button.undo-state {
+  background-color: #fff9db;
+  color: #856404;
+  border-color: #ffe066;
+}
+
+.reset-button.undo-state:hover {
+  background-color: #fff3bf;
+  border-color: #fcc419;
+}
+
 .counter-button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
