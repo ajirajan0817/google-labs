@@ -1,5 +1,5 @@
-import { render, screen, fireEvent } from '@testing-library/react'
-import { expect, test } from 'vitest'
+import { render, screen, fireEvent, act } from '@testing-library/react'
+import { expect, test, vi } from 'vitest'
 import App from './App'
 
 test('increments, decrements and resets counter', () => {
@@ -69,4 +69,39 @@ test('handles keyboard shortcuts', () => {
   fireEvent.keyDown(window, { key: '+' })
   fireEvent.keyDown(window, { key: 'R' })
   expect(screen.getByText(/count is 0/i)).toBeInTheDocument()
+})
+
+test('can undo reset via button and keyboard', async () => {
+  vi.useFakeTimers()
+  render(<App />)
+
+  const incrementBtn = screen.getByRole('button', { name: /increment count/i })
+  const resetBtn = screen.getByRole('button', { name: /reset count/i })
+
+  // 1. Undo via button
+  fireEvent.click(incrementBtn) // 1
+  fireEvent.click(incrementBtn) // 2
+  fireEvent.click(resetBtn)
+  expect(screen.getByText(/count is 0/i)).toBeInTheDocument()
+
+  const undoBtn = screen.getByRole('button', { name: /undo reset/i })
+  fireEvent.click(undoBtn)
+  expect(screen.getByText(/count is 2/i)).toBeInTheDocument()
+  expect(screen.queryByRole('button', { name: /undo reset/i })).not.toBeInTheDocument()
+
+  // 2. Undo via keyboard (Ctrl+Z)
+  fireEvent.click(resetBtn)
+  expect(screen.getByText(/count is 0/i)).toBeInTheDocument()
+  fireEvent.keyDown(window, { key: 'z', ctrlKey: true })
+  expect(screen.getByText(/count is 2/i)).toBeInTheDocument()
+
+  // 3. Undo expires after 5 seconds
+  fireEvent.click(resetBtn)
+  expect(screen.queryByRole('button', { name: /undo reset/i })).toBeInTheDocument()
+  act(() => {
+    vi.advanceTimersByTime(5000)
+  })
+  expect(screen.queryByRole('button', { name: /undo reset/i })).not.toBeInTheDocument()
+
+  vi.useRealTimers()
 })
