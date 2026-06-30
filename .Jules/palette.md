@@ -17,3 +17,7 @@
 ## 2026-05-18 - Discoverable Keyboard Shortcuts & Visual Feedback
 **Learning:** Adding 'aria-keyshortcuts' makes shortcuts discoverable for screen reader users. However, shortcuts need visual confirmation for sighted users too; simulating an 'active' state via React state-driven classes provides a delightful, consistent experience across mouse and keyboard interactions.
 **Action:** Always pair keyboard listeners with 'aria-keyshortcuts' and a short-lived visual 'active' state to bridge the gap between input methods.
+
+## 2026-05-19 - Temporal Safety Net for Destructive Actions
+**Learning:** Providing a 5-second "Undo" safety net for destructive actions like "Reset" improves user confidence and prevents accidental data loss without the friction of a confirmation dialog. This "invisible" safety net is more delightful than interruptive confirmation modals.
+**Action:** Implement timed undo windows for atomic destructive operations using toast notifications and keyboard shortcuts (Ctrl+Z).
