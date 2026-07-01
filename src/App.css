@@ -99,3 +99,49 @@ main {
   border-radius: 3px;
   font-family: monospace;
 }
+
+.undo-toast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff9db;
+  color: #5c3c00;
+  padding: 0.75rem 1.5rem;
+  border-radius: 50px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  animation: fadeIn 0.3s ease;
+  z-index: 100;
+  font-weight: 500;
+}
+
+.undo-button {
+  background: none;
+  border: none;
+  color: #364fc7;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  text-decoration: underline;
+  font-size: inherit;
+  transition: background 0.2s;
+}
+
+.undo-button:hover {
+  background: rgba(54, 79, 199, 0.1);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 10px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
