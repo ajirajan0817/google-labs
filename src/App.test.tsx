@@ -70,3 +70,21 @@ test('handles keyboard shortcuts', () => {
   fireEvent.keyDown(window, { key: 'R' })
   expect(screen.getByText(/count is 0/i)).toBeInTheDocument()
 })
+
+test('undoes the reset action via button and shortcut', () => {
+  render(<App />)
+  const inc = screen.getByRole('button', { name: /increment count/i })
+  const reset = screen.getByRole('button', { name: /reset count/i })
+
+  // Button undo
+  fireEvent.click(inc); fireEvent.click(inc)
+  fireEvent.click(reset)
+  expect(screen.getByText(/count is 0/i)).toBeInTheDocument()
+  fireEvent.click(screen.getByRole('button', { name: /undo reset/i }))
+  expect(screen.getByText(/count is 2/i)).toBeInTheDocument()
+
+  // Keyboard undo (using Ctrl+Z pattern)
+  fireEvent.click(reset)
+  fireEvent.keyDown(window, { key: 'z', ctrlKey: true })
+  expect(screen.getByText(/count is 2/i)).toBeInTheDocument()
+})
