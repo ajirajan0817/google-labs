@@ -17,3 +17,7 @@
 ## 2026-05-18 - Discoverable Keyboard Shortcuts & Visual Feedback
 **Learning:** Adding 'aria-keyshortcuts' makes shortcuts discoverable for screen reader users. However, shortcuts need visual confirmation for sighted users too; simulating an 'active' state via React state-driven classes provides a delightful, consistent experience across mouse and keyboard interactions.
 **Action:** Always pair keyboard listeners with 'aria-keyshortcuts' and a short-lived visual 'active' state to bridge the gap between input methods.
+
+## 2026-05-20 - Non-Interruptive Safety Nets with Undo
+**Learning:** For destructive but reversible actions like "Reset", an "Undo" toast is superior to a confirmation dialog. It preserves user flow while providing a safety net. Pair this with a standard keyboard shortcut (Ctrl/Cmd+Z) and clear visual feedback for maximum effectiveness.
+**Action:** Prefer "Undo" patterns for micro-actions. Ensure the toast has `aria-live="assertive"` and high-contrast action links (WCAG AA).
