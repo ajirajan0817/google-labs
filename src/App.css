@@ -1,101 +1,19 @@
-:root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-}
-
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-  background-color: #f0f2f5;
-}
-
-main {
-  text-align: center;
-  margin: 0 auto;
-  padding: 2rem;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-}
-
-.count-display {
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin: 1.5rem 0;
-  color: #1a1a1a;
-}
-
-.counter-container {
-  margin-top: 1rem;
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-}
-
-.counter-button {
-  border-radius: 8px;
-  border: 1px solid #535bf2;
-  padding: 0.6em 1.2rem;
-  font-size: 1.1em;
-  font-weight: 600;
-  font-family: inherit;
-  background-color: #535bf2;
-  color: white;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.counter-button:hover {
-  background-color: #4048e0;
-  border-color: #4048e0;
-  transform: translateY(-1px);
-}
-
-.counter-button:active,
-.counter-button.active {
-  transform: translateY(0);
-  filter: brightness(0.9);
-}
-
-.counter-button:focus,
-.counter-button:focus-visible {
-  outline: 4px solid #535bf2;
-  outline-offset: 2px;
-}
-
-.reset-button {
-  background-color: #f1f1f1;
-  color: #333;
-  border-color: #ccc;
-}
-
-.reset-button:hover {
-  background-color: #e5e5e5;
-  border-color: #999;
-}
-
-.counter-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  filter: grayscale(0.5);
-  transform: none;
-}
-
-.shortcut-guide {
-  margin-top: 2rem;
-  padding-top: 1rem;
-  border-top: 1px solid #eee;
-  color: #666;
-  font-size: 0.85rem;
-}
-
-.shortcut-guide strong {
-  background: #eee;
-  padding: 0 0.3rem;
-  border-radius: 3px;
-  font-family: monospace;
-}
+:root { font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif; line-height: 1.5; font-weight: 400; }
+body { margin: 0; display: flex; place-items: center; min-width: 320px; min-height: 100vh; background-color: #f0f2f5; }
+main { text-align: center; margin: 0 auto; padding: 2rem; background: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+.count-display { font-size: 2.5rem; font-weight: 700; margin: 1.5rem 0 0.5rem 0; color: #1a1a1a; }
+.undo-toast-container { height: 48px; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; }
+.undo-toast { background-color: #fff9db; color: #5c3c00; padding: 0.5rem 1rem; border-radius: 8px; font-size: 0.9rem; font-weight: 500; display: flex; gap: 0.75rem; align-items: center; animation: fadeIn 0.3s ease-out; }
+.undo-button { background: none; border: none; color: #364fc7; font-weight: 700; cursor: pointer; padding: 0.2rem 0.4rem; border-radius: 4px; text-decoration: underline; transition: all 0.1s; }
+.undo-button:hover, .undo-button.active { background-color: rgba(54, 79, 199, 0.1); }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.counter-container { margin-top: 1rem; display: flex; gap: 1rem; justify-content: center; }
+.counter-button { border-radius: 8px; border: 1px solid #535bf2; padding: 0.6em 1.2rem; font-size: 1.1em; font-weight: 600; font-family: inherit; background-color: #535bf2; color: white; cursor: pointer; transition: all 0.2s ease; }
+.counter-button:hover { background-color: #4048e0; border-color: #4048e0; transform: translateY(-1px); }
+.counter-button:active, .counter-button.active { transform: translateY(0); filter: brightness(0.9); }
+.counter-button:focus, .counter-button:focus-visible { outline: 4px solid #535bf2; outline-offset: 2px; }
+.reset-button { background-color: #f1f1f1; color: #333; border-color: #ccc; }
+.reset-button:hover { background-color: #e5e5e5; border-color: #999; }
+.counter-button:disabled { opacity: 0.6; cursor: not-allowed; filter: grayscale(0.5); transform: none; }
+.shortcut-guide { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #eee; color: #666; font-size: 0.85rem; }
+.shortcut-guide strong { background: #eee; padding: 0 0.3rem; border-radius: 3px; font-family: monospace; }
