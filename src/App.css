@@ -99,3 +99,14 @@ main {
   border-radius: 3px;
   font-family: monospace;
 }
+
+.undo-container { height: 40px; margin-top: 1rem; display: flex; justify-content: center; align-items: center; }
+.undo-toast { background: #fff9db; color: #5c3c00; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.9rem; animation: fadeIn 0.3s ease-out; }
+.undo-toast.active { filter: brightness(0.9); transform: scale(0.98); }
+.undo-button { background: none; border: none; color: #364fc7; font-weight: 700; cursor: pointer; text-decoration: underline; padding: 0 0.2rem; }
+.undo-button:hover { color: #1c7ed6; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
