@@ -70,3 +70,40 @@ test('handles keyboard shortcuts', () => {
   fireEvent.keyDown(window, { key: 'R' })
   expect(screen.getByText(/count is 0/i)).toBeInTheDocument()
 })
+
+test('allows undoing a reset', () => {
+  render(<App />)
+  const incrementBtn = screen.getByRole('button', { name: /increment count/i })
+  const resetBtn = screen.getByRole('button', { name: /reset count/i })
+
+  // Increment to 5
+  for (let i = 0; i < 5; i++) fireEvent.click(incrementBtn)
+  expect(screen.getByText(/count is 5/i)).toBeInTheDocument()
+
+  // Reset
+  fireEvent.click(resetBtn)
+  expect(screen.getByText(/count is 0/i)).toBeInTheDocument()
+
+  // Undo
+  const undoBtn = screen.getByRole('button', { name: /undo reset/i })
+  expect(undoBtn).toBeInTheDocument()
+  fireEvent.click(undoBtn)
+
+  // Verify restored
+  expect(screen.getByText(/count is 5/i)).toBeInTheDocument()
+  expect(screen.queryByRole('button', { name: /undo reset/i })).not.toBeInTheDocument()
+})
+
+test('handles undo shortcut', () => {
+  render(<App />)
+  const incrementBtn = screen.getByRole('button', { name: /increment count/i })
+  const resetBtn = screen.getByRole('button', { name: /reset count/i })
+
+  fireEvent.click(incrementBtn)
+  fireEvent.click(resetBtn)
+  expect(screen.getByText(/count is 0/i)).toBeInTheDocument()
+
+  // Undo with Ctrl+Z
+  fireEvent.keyDown(window, { key: 'z', ctrlKey: true })
+  expect(screen.getByText(/count is 1/i)).toBeInTheDocument()
+})
