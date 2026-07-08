@@ -32,6 +32,15 @@ test('increments, decrements and resets counter', () => {
   fireEvent.click(resetBtn)
   expect(screen.getByText(/count is 0/i)).toBeInTheDocument()
 })
+test('provides undo functionality after reset', () => {
+  render(<App />); const inc = screen.getByRole('button', { name: /increment count/i })
+  const res = screen.getByRole('button', { name: /reset count/i })
+  fireEvent.click(inc); fireEvent.click(inc); fireEvent.click(res)
+  fireEvent.click(screen.getByRole('button', { name: /undo reset/i }))
+  expect(screen.getByText(/count is 2/i)).toBeInTheDocument()
+  fireEvent.click(res); fireEvent.keyDown(window, { key: 'z', ctrlKey: true })
+  expect(screen.getByText(/count is 2/i)).toBeInTheDocument()
+})
 
 test('updates document title with current count', () => {
   render(<App />)
